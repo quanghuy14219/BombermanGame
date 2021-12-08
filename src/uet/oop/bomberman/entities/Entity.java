@@ -17,6 +17,7 @@ public abstract class Entity {
     protected Image img;
     protected boolean removed = false;
     protected Sprite sprite;
+    protected RectBox boundedBox;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity( int xUnit, int yUnit, Image img) {
@@ -78,10 +79,21 @@ public abstract class Entity {
         this.sprite = sprite;
     }
 
+    public RectBox getBoundedBox() {
+        return boundedBox;
+    }
+
+    public void setBoundedBox(RectBox boundedBox) {
+        this.boundedBox = boundedBox;
+    }
+
     /**
      * Phương thức này được gọi để xử lý khi hai entity va chạm vào nhau
      */
-    public abstract boolean collide(Entity e);
+    public boolean collide(Entity e) {
+        RectBox otherBox = e.getBoundedBox();
+        return boundedBox.checkCollision(otherBox);
+    }
 
 
 }
