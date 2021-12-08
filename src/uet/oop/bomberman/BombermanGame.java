@@ -9,8 +9,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
-import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.Item.Grass;
+import uet.oop.bomberman.entities.Item.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
