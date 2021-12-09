@@ -1,4 +1,5 @@
+# Project exclude paths
 /target
-/bin
-/.idea
-*.iml
+Bomberman.iml
+.idea
+out
