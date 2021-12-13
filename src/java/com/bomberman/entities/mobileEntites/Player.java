@@ -18,8 +18,8 @@ import java.util.List;
 public class Player extends MobileEntity {
     private static Player player;
 
-    private int bombCount = 1;
-    private int placedBombs = 0;
+    private int bombCount = 1;      // số lượng bomb của player
+    private int placedBombs = 0;    // số bomb đã đặt
     private int bombRadius = 1;
 
     private boolean ableToPassFlame = false;

@@ -8,12 +8,12 @@ import com.bomberman.entities.stacticEntities.Item;
 import graphics.Sprite;
 import javafx.scene.image.Image;
 
-public class WallPassItem extends Item {
-    public WallPassItem(int x, int y, Image powerup) {
+public class BrickPassItem extends Item {
+    public BrickPassItem(int x, int y, Image powerup) {
         super(x, y, powerup);
     }
 
-    public WallPassItem(int x, int y) {
+    public BrickPassItem(int x, int y) {
         super(x, y, Sprite.powerup_wallpass);
     }
 

@@ -46,14 +46,14 @@ public class Map {
 
     public static char[][] myMap;
     public static char[][] mapMatrix;
-    private static final List<Enemy> enemyLayer = new ArrayList<>();
-    private static final List<Entity> topLayer = new ArrayList<>();
-    private static final List<Entity> midLayer = new ArrayList<>();
-    private static final List<Entity> boardLayer = new ArrayList<>();
+    private static final List<Enemy> enemyLayer = new ArrayList<>();    // Enemy: Balloom Oneal Doll Minvo Kondoria
+    private static final List<Entity> topLayer = new ArrayList<>();     // Bomb, Flame, Brick
+    private static final List<Entity> midLayer = new ArrayList<>();     // Portal, Item
+    private static final List<Entity> boardLayer = new ArrayList<>();   // Wall, Grass
     public static int CANVAS_WIDTH;
     public static int CANVAS_HEIGHT;
 
-    public static int currentLevel = 5;
+    public static int currentLevel = 1;
     public static int gameScore = 0;
     private static boolean continueL = false;
 
@@ -68,6 +68,7 @@ public class Map {
         sceneStarted = false;
     }
 
+    // khởi tạo game
     private static void initGame() {
         rootGame = new Group();
         scene = new Scene(rootGame, Const.SCENE_WIDTH, Const.SCENE_HEIGHT);
@@ -137,6 +138,8 @@ public class Map {
         for (int i = 0; i < mapHeight; i++) {
             for (int j = 0; j < mapWidth; j++) {
                 char c = myMap[i][j];
+
+                // add vào boardLayer
                 addEntity(c, j * Const.SCALED_SIZE, i * Const.SCALED_SIZE);
             }
         }
@@ -144,6 +147,7 @@ public class Map {
         canvas.setWidth(CANVAS_WIDTH);
     }
 
+    // set góc quay của camera để nhìn thấy player
     public static void setCameraView() {
         if (player.getX_pos() < Const.SCENE_WIDTH / 2) {
             canvas.setLayoutX(0);
@@ -239,6 +243,8 @@ public class Map {
         newGame.setOnMouseEntered(MouseEvent -> newGame.setTextFill(Color.web("#ff3422")));
         newGame.setOnMouseExited(MouseEvent -> newGame.setTextFill(Color.web("#ffffff")));
         newGame.setOnMouseClicked(MouseEvent ->{
+            currentLevel = 1;   // trở về level 1
+            gameScore = 0;      // trở về 0 điểm
             Sound.BGM.stop();
             Map.initScene();
             Main.getStage().setScene(scene);
@@ -365,14 +371,9 @@ public class Map {
                 midLayer.add(new FlamesItem(x, y));
                 topLayer.add(new Brick(x, y));
             }
-            case 'd' -> {
-                boardLayer.add(new Grass(x, y));
-                midLayer.add(new DetonatorItem(x, y));
-                topLayer.add(new Brick(x, y));
-            }
             case 'w' -> {
                 boardLayer.add(new Grass(x, y));
-                midLayer.add(new WallPassItem(x, y));
+                midLayer.add(new BrickPassItem(x, y));
                 topLayer.add(new Brick(x, y));
             }
             case 'm' -> {
@@ -529,7 +530,7 @@ public class Map {
                     temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = 'd';
                 } else if (ele instanceof FlamesItem) {
                     temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = 'f';
-                } else if (ele instanceof WallPassItem) {
+                } else if (ele instanceof BrickPassItem) {
                     temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = 'w';
                 } else if (ele instanceof BombPassItem) {
                     temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = 'n';

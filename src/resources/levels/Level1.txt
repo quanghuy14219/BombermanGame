@@ -30,3 +30,6 @@ Powerups:
 b - Powerup Bombs
 f - Powerup Flames
 s - Powerup Speed
+w - Powerup Brick Pass
+m - Powerup Flame Pass
+n - Powerup Bomb Pass
