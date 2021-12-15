@@ -42,8 +42,7 @@ public class GameLoop {
                     Map.isPassLevel = false;
                     cd2 = 50;
                     Map.tranfer();
-                    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(3000), ev -> {
-                        System.out.println("test");
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30000), ev -> {
                         Map.nextLevel();
                         start();
                     }));

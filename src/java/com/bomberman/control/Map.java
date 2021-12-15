@@ -179,12 +179,11 @@ public class Map {
         if (currentLevel < 5) {
             currentLevel += 1;
         } else {
-            currentLevel = 1;
+            currentLevel = 1;   // vuot qua man 5 quay lai man 1
         }
     }
 
     public static void nextLevel() {
-        System.out.println("test1");
         continueL = false;
         clearMap();
         nextMap();

@@ -4,8 +4,8 @@ import javafx.scene.image.Image;
 
 public abstract class AnimatedEntity extends Entity{
 
-    protected int animate = 0;                  // ??? như 1 cái làm mốc đo thời gian
-    protected final int MAX_ANIMATE = 7500;     // ???
+    protected int animate = 0;                  // như 1 cái làm mốc đo thời gian
+    protected final int MAX_ANIMATE = 1000000;
 
     public AnimatedEntity(int x, int y, Image image) {
         super(x, y, image);
