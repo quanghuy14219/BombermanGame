@@ -10,19 +10,6 @@ import java.util.List;
 
 public class Controller {
     public static List<KeyCode> playerController = new ArrayList<>();
-    public static void attachEventHandler(Scene scene) {
-        playerController.clear();
-        scene.setOnKeyPressed(keyEvent ->{
-            KeyCode keyCode = keyEvent.getCode();
-            if (! playerController.contains(keyCode)) {
-                playerController.add(keyCode);
-            }
-        });
-        scene.setOnKeyReleased(keyEvent ->{
-            KeyCode keyCode = keyEvent.getCode();
-            playerController.remove(keyCode);
-        });
-    }
 
     public void playerMovementHandler() {
         Player player = Player.getPlayer();
@@ -53,6 +40,20 @@ public class Controller {
         if (playerController.contains(KeyCode.SPACE)) {
             player.placeBomb();
         }
+    }
+
+    public static void attachEventHandler(Scene scene) {
+        playerController.clear();
+        scene.setOnKeyPressed(keyEvent -> {
+            KeyCode keyCode = keyEvent.getCode();
+            if (!playerController.contains(keyCode)) {
+                playerController.add(keyCode);
+            }
+        });
+        scene.setOnKeyReleased(keyEvent -> {
+            KeyCode keyCode = keyEvent.getCode();
+            playerController.remove(keyCode);
+        });
     }
 
 }

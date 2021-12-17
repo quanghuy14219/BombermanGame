@@ -13,6 +13,7 @@ import javafx.util.Duration;
 public class GameLoop {
     private static int cd1;
     private static int cd2;
+
     public static void start(GraphicsContext graphicsContext) {
         cd1 = 50;
         cd2 = 50;
@@ -25,7 +26,7 @@ public class GameLoop {
                         , Map.mapHeight * Const.SCALED_SIZE);
                 updateGame();
                 renderGame(graphicsContext);
-                Map.exportLevel();
+                //Map.exportLevel();
                 if (cd1 == 0) {
                     stop();
                     cd1 = 50;
@@ -58,6 +59,24 @@ public class GameLoop {
         timer.start();
     }
 
+    private static void renderGame(GraphicsContext graphicsContext) {
+
+        for (Entity entity : Map.getBoardLayer()) {
+            entity.render(graphicsContext);
+        }
+
+        for (Entity entity : Map.getMidLayer()) {
+            entity.render(graphicsContext);
+        }
+        for (Entity entity : Map.getTopLayer()) {
+            entity.render(graphicsContext);
+        }
+        for (Entity entity : Map.getEnemyLayer()) {
+            entity.render(graphicsContext);
+        }
+        Player.getPlayer().render(graphicsContext);
+    }
+
     private static void updateGame() {
         Map.bombs.setText("Bomb: " + Player.getPlayer().getRemainBombs());
         Map.score.setText("Score: " + Map.gameScore);
@@ -76,23 +95,5 @@ public class GameLoop {
         Player.getPlayer().update();
         Map.setCameraView();
         Map.removeEntity();
-    }
-
-    private static void renderGame(GraphicsContext graphicsContext) {
-
-        for (Entity entity : Map.getBoardLayer()) {
-            entity.render(graphicsContext);
-        }
-
-        for (Entity entity : Map.getMidLayer()) {
-            entity.render(graphicsContext);
-        }
-        for (Entity entity : Map.getTopLayer()) {
-            entity.render(graphicsContext);
-        }
-        for (Entity entity : Map.getEnemyLayer()) {
-            entity.render(graphicsContext);
-        }
-        Player.getPlayer().render(graphicsContext);
     }
 }

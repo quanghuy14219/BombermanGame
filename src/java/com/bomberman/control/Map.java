@@ -76,7 +76,7 @@ public class Map {
         initLabel();
         rootGame.getChildren().addAll(paneGame, canvas, score, enemies, bombs, levels);
         graphicsContext = canvas.getGraphicsContext2D();
-        createMap(currentLevel);
+        setMap(currentLevel);
         GameLoop.start(getGraphicsContext());
         Controller.attachEventHandler(scene);
     }
@@ -125,11 +125,8 @@ public class Map {
         return scene;
     }
 
-    public static GraphicsContext getGraphicsContext() {
-        return graphicsContext;
-    }
-
-    public static void createMap(int level) {
+    // chuyển từ file txt(level1) thành dữ liệu
+    public static void setMap(int level) {
         levels.setText("Level: " + level);
         clearMap();
         if (!continueL) {
@@ -147,7 +144,16 @@ public class Map {
         canvas.setWidth(CANVAS_WIDTH);
     }
 
+    public static void nextMap() {
+        if (currentLevel < 5) {
+            currentLevel += 1;
+        } else {
+            currentLevel = 1;   // vuot qua man 5 quay lai man 1
+        }
+    }
+
     // set góc quay của camera để nhìn thấy player
+
     public static void setCameraView() {
         if (player.getX_pos() < Const.SCENE_WIDTH / 2) {
             canvas.setLayoutX(0);
@@ -166,6 +172,36 @@ public class Map {
         }
     }
 
+    public static void tranfer() {
+        rootTransfer = new Group();
+        paneTransfer = new Pane();
+        paneTransfer.setLayoutX(0);
+
+        paneTransfer.setLayoutY(0);
+        paneTransfer.setPrefWidth(Const.SCENE_WIDTH);
+        paneTransfer.setPrefHeight(Const.SCENE_HEIGHT);
+        paneTransfer.setStyle("-fx-background-color: BLACK");
+        //Show stage
+        Label temp = new Label("Stage " + (currentLevel + 1));
+        Font tempfont = Font.loadFont(Main.class.getResourceAsStream("/Font/joystix monospace.ttf"), 40);
+        temp.setFont(tempfont);
+        temp.setTextFill(Color.web("#ffffff"));
+        temp.autosize();
+        temp.setLayoutX(250);
+        temp.setLayoutY(250);
+        rootTransfer.getChildren().addAll(paneTransfer, temp);
+        scene.setRoot(rootTransfer);
+    }
+
+    public static void nextLevel() {
+        continueL = false;
+        clearMap();
+        nextMap();
+        setMap(currentLevel);
+        player.setBombCount();
+        scene.setRoot(rootGame);
+    }
+
     public static void clearMap() {
         graphicsContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         enemyLayer.clear();
@@ -173,23 +209,6 @@ public class Map {
         midLayer.clear();
         boardLayer.clear();
         sceneStarted = false;
-    }
-
-    public static void nextMap() {
-        if (currentLevel < 5) {
-            currentLevel += 1;
-        } else {
-            currentLevel = 1;   // vuot qua man 5 quay lai man 1
-        }
-    }
-
-    public static void nextLevel() {
-        continueL = false;
-        clearMap();
-        nextMap();
-        createMap(currentLevel);
-        player.setBombCount();
-        scene.setRoot(rootGame);
     }
 
     public static void gameOver(String mess) {
@@ -241,7 +260,7 @@ public class Map {
         newGame.setLayoutY(370);
         newGame.setOnMouseEntered(MouseEvent -> newGame.setTextFill(Color.web("#ff3422")));
         newGame.setOnMouseExited(MouseEvent -> newGame.setTextFill(Color.web("#ffffff")));
-        newGame.setOnMouseClicked(MouseEvent ->{
+        newGame.setOnMouseClicked(MouseEvent -> {
             currentLevel = 1;   // trở về level 1
             gameScore = 0;      // trở về 0 điểm
             Sound.BGM.stop();
@@ -258,7 +277,7 @@ public class Map {
         menu.setLayoutY(430);
         menu.setOnMouseEntered(MouseEvent -> menu.setTextFill(Color.web("#ff3422")));
         menu.setOnMouseExited(MouseEvent -> menu.setTextFill(Color.web("#ffffff")));
-        menu.setOnMouseClicked(MouseEvent ->{
+        menu.setOnMouseClicked(MouseEvent -> {
             Sound.BGM.stop();
             Main.getStage().setScene(Menu.menuScene(Main.getStage()));
         });
@@ -271,7 +290,7 @@ public class Map {
         score.setLayoutY(320);
         score.setOnMouseEntered(MouseEvent -> menu.setTextFill(Color.web("#ff3422")));
         score.setOnMouseExited(MouseEvent -> menu.setTextFill(Color.web("#ffffff")));
-        score.setOnMouseClicked(MouseEvent ->{
+        score.setOnMouseClicked(MouseEvent -> {
             Sound.BGM.stop();
             Main.getStage().setScene(Menu.menuScene(Main.getStage()));
         });
@@ -279,25 +298,8 @@ public class Map {
         scene.setRoot(rootGameOver);
     }
 
-    public static void tranfer() {
-        rootTransfer = new Group();
-        paneTransfer = new Pane();
-        paneTransfer.setLayoutX(0);
-
-        paneTransfer.setLayoutY(0);
-        paneTransfer.setPrefWidth(Const.SCENE_WIDTH);
-        paneTransfer.setPrefHeight(Const.SCENE_HEIGHT);
-        paneTransfer.setStyle("-fx-background-color: BLACK");
-        //Show stage
-        Label temp = new Label("Stage " + (currentLevel+1));
-        Font tempfont = Font.loadFont(Main.class.getResourceAsStream("/Font/joystix monospace.ttf"), 40);
-        temp.setFont(tempfont);
-        temp.setTextFill(Color.web("#ffffff"));
-        temp.autosize();
-        temp.setLayoutX(250);
-        temp.setLayoutY(250);
-        rootTransfer.getChildren().addAll(paneTransfer, temp);
-        scene.setRoot(rootTransfer);
+    public static GraphicsContext getGraphicsContext() {
+        return graphicsContext;
     }
 
     public static void removeEntity() {
@@ -341,7 +343,6 @@ public class Map {
 
     public static void addEntity(char c, int x, int y) {
         switch (c) {
-            //maze
             case '#' -> boardLayer.add(new Wall(x, y));
             case '*' -> {
                 boardLayer.add(new Grass(x, y));
@@ -467,7 +468,7 @@ public class Map {
                 boolean ablePassWall = Boolean.parseBoolean(tokens.nextToken());
                 boolean ablePassBrick = Boolean.parseBoolean(tokens.nextToken());
                 boolean alive = Boolean.parseBoolean(tokens.nextToken());
-                player = Player.setPlayerPlus(x, y, bombCount, bombRadius ,speed,
+                player = Player.setPlayerPlus(x, y, bombCount, bombRadius, speed,
                         ablePassFlame, ablePassBomb, ablePassWall, ablePassBrick, alive);
             }
         } catch (IOException e) {
@@ -487,71 +488,5 @@ public class Map {
             }
         }
         return null;
-    }
-
-    public static void exportLevel() {
-        try {
-            File file = new File("Level0.txt");
-            OutputStream outputStream = new FileOutputStream(file);
-            OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-            writer.write(currentLevel + " " + mapHeight + " " + mapWidth + "\n");
-            char[][] temp = new char[mapHeight][mapWidth];
-            for (int i = 0; i < mapHeight; i++) {
-                for (int j = 0; j < mapWidth; j++) {
-                    temp[i][j] = mapMatrix[i][j];
-                }
-            }
-            //player
-            temp[player.getY_pos() / Const.BLOCK_SIZE][player.getX_pos() / Const.BLOCK_SIZE] = 'p';
-            //enemy
-            for (Entity ele : enemyLayer) {
-                if (ele instanceof Balloom) {
-                    temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = '1';
-                } else if (ele instanceof Doll) {
-                    temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = '3';
-                } else if (ele instanceof Kondoria) {
-                    temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = '5';
-                } else if (ele instanceof Minvo) {
-                    temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = '4';
-                } else if (ele instanceof Oneal) {
-                    temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = '2';
-                }
-            }
-            //midLayer
-            for (Entity ele : midLayer) {
-                if (ele instanceof Portal) {
-                    temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = 'x';
-                } else if (ele instanceof BombsItem) {
-                    temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = 'b';
-                } else if (ele instanceof SpeedItem) {
-                    temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = 's';
-                } else if (ele instanceof DetonatorItem) {
-                    temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = 'd';
-                } else if (ele instanceof FlamesItem) {
-                    temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = 'f';
-                } else if (ele instanceof BrickPassItem) {
-                    temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = 'w';
-                } else if (ele instanceof BombPassItem) {
-                    temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = 'n';
-                } else if (ele instanceof FlamePassItem) {
-                    temp[ele.getY_pos() / Const.BLOCK_SIZE][ele.getX_pos() / Const.BLOCK_SIZE] = 'm';
-                }
-            }
-            for (int i = 0; i < mapHeight; i++) {
-                for (int j = 0; j < mapWidth; j++) {
-                    writer.write(temp[i][j]);
-                }
-                writer.write("\n");
-            }
-            writer.write(gameScore + "\n");
-            writer.write(player.getX_pos() / Const.BLOCK_SIZE + " " + player.getY_pos() / Const.BLOCK_SIZE
-                    + " " + player.getBombCount() + " " + player.getBombRadius() + " "
-                    + player.getSpeed() + " " + player.isAbleToPassFlame()
-                    + " " + player.isAbleToPassBomb() + " " + player.isAbleToPassWall() + " "
-                    + player.isAbleToPassBrick() + " " + player.isAlive());
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

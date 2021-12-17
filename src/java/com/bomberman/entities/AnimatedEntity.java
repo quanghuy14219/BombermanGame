@@ -5,13 +5,13 @@ import javafx.scene.image.Image;
 public abstract class AnimatedEntity extends Entity{
 
     protected int animate = 0;                  // như 1 cái làm mốc đo thời gian
-    protected final int MAX_ANIMATE = 1000000;
+    protected final int MAX_ANIMATE = 500000;
 
     public AnimatedEntity(int x, int y, Image image) {
         super(x, y, image);
     }
 
-    // ????
+
     protected void animation() {
         if (animate < MAX_ANIMATE) {
             animate++;
@@ -20,6 +20,6 @@ public abstract class AnimatedEntity extends Entity{
         }
     }
 
-    // ??? chạy hiệu ứng hình ảnh ???
+    // ??? chạy hiệu ứng hình ảnh
     public abstract void playAnimation();
 }

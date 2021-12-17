@@ -40,7 +40,7 @@ public class Player extends MobileEntity {
 
     public Player(int x, int y, Image player) {
         super(x, y, player);
-        boundedBox = new RectBox(x, y, Const.SCALED_SIZE - 20, Const.SCALED_SIZE - 20);
+        boundedBox = new RectBox(x, y, Const.SCALED_SIZE - 40, Const.SCALED_SIZE - 40);
         alive = true;
         controller = new Controller();
         x_init = x;
@@ -193,6 +193,7 @@ public class Player extends MobileEntity {
                     break;
                 }
             }
+            alive = true;   // bất tử
         }
     }
 

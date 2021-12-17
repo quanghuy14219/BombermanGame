@@ -32,6 +32,11 @@ public class Sound {
         }
     }
 
+    public void stop() {
+        clip.stop();
+        clip.setFramePosition(0);
+    }
+
     public void play(Boolean loop) {
         if (volume != Volume.MUTE) {
             if (clip.isRunning()) {
@@ -44,11 +49,6 @@ public class Sound {
             }
         }
 
-    }
-
-    public void stop() {
-        clip.stop();
-        clip.setFramePosition(0);
     }
 
     public void mute() {
