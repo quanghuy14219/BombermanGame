@@ -193,7 +193,7 @@ public class Player extends MobileEntity {
                     break;
                 }
             }
-            alive = true;   // bất tử
+//            alive = true;   // bất tử
         }
     }
 
